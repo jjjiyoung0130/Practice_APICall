@@ -42,6 +42,7 @@ const MainPage = () => {
             ))}
           </ul>
         )}
+        <div></div>
       </div>
     </>
   );
