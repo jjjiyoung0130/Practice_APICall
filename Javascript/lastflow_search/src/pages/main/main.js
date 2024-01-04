@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import { styled } from "styled-components";
+import RecentSearch from "../components/RecnetSearch";
 
 const MainPage = () => {
   const [search, setSearch] = useState("");
@@ -97,24 +98,9 @@ const MainPage = () => {
           placeholder="검색어를 입력해주세요."
         />
         <Styled.SerachButton onClick={handleSearch}>검색</Styled.SerachButton>
+
+        {showRecentSearches ? <RecentSearch /> : null}
       </div>
-
-      <Styled.RecentSearchContainer
-        $show={showRecentSearches}
-        className="recentSearchContainer"
-      >
-        {showRecentSearches && (
-          <div>
-            <h5>최근 검색어</h5>
-            <ul>
-              {recentSearch.map((recent, index) => (
-                <Styled.RecentSearch key={index}>{recent}</Styled.RecentSearch>
-              ))}
-            </ul>
-          </div>
-        )}
-      </Styled.RecentSearchContainer>
-
       <div>
         {error ? (
           <p>{error}</p>
@@ -173,33 +159,10 @@ const SearchResult = styled.li`
       : "black"};
 `;
 
-const RecentSearchContainer = styled.div`
-  width: 300px;
-  border: 1px solid #365486;
-  border-radius: 10px;
-  display: ${(props) => (props.$show ? "inline-block" : "none")};
-  position: absolute;
-  background-color: white;
-  z-index: 1;
-`;
-
-const RecentSearch = styled.li`
-  list-style: none;
-  padding: 10px;
-  margin: 0;
-  cursor: pointer;
-
-  &:hover {
-    background-color: #f0f0f0;
-  }
-`;
-
 const Styled = {
   Wrapper,
   SearchInput,
   SerachButton,
   ResultContents,
   SearchResult,
-  RecentSearchContainer,
-  RecentSearch,
 };
