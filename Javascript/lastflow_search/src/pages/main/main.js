@@ -8,9 +8,6 @@ const MainPage = () => {
   const [searchResult, setSearchResult] = useState([]);
   const [error, setError] = useState(null);
   const [recentSearch, setRecentSearch] = useState([]);
-  const [showRecentSearches, setShowRecentSearches] = useState(false);
-
-  const wrapperRef = useRef(null);
 
   useEffect(() => {
     const storedSearches = localStorage.getItem("recentSearches");
@@ -51,55 +48,16 @@ const MainPage = () => {
     }
   };
 
-  const handleInputClick = () => {
-    setShowRecentSearches(true);
-    console.log(showRecentSearches);
-  };
-
-  /* const handleOutsideClick = (e) => {
-    // 현재 요소를 포함한 가장 가까운 조상 요소 중 클래스가 "recentSearchContainer"인 요소를 찾고 없으면 false
-    if (e.target.closest(".recentSearchContainer") === null) {
-      setShowRecentSearches(false);
-    }
-  }; */
-  /* const handleOutsideClick = (e) => {
-    if (e.target.closest(".recentSearchContainer") === null) {
-      setShowRecentSearches((prev) => {
-        // 현재 상태 값에 따라 업데이트
-        return prev ? false : prev;
-      });
-    }
-  }; */
-  const handleOutsideClick = (e) => {
-    if (wrapperRef.current && !wrapperRef.current.contains(e.target)) {
-      setShowRecentSearches((prev) => !prev);
-      console.log(showRecentSearches);
-    }
-  };
-
-  useEffect(() => {
-    if (showRecentSearches) {
-      document.addEventListener("click", handleOutsideClick);
-    } else {
-      document.removeEventListener("click", handleOutsideClick);
-    }
-    return () => {
-      document.removeEventListener("click", handleOutsideClick);
-    };
-  }, [showRecentSearches]);
-
   return (
     <Styled.Wrapper>
       <div>
         <Styled.SearchInput
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          onClick={handleInputClick}
+          // onClick={handleInputClick}
           placeholder="검색어를 입력해주세요."
         />
         <Styled.SerachButton onClick={handleSearch}>검색</Styled.SerachButton>
-
-        {showRecentSearches ? <RecentSearch /> : null}
       </div>
       <div>
         {error ? (
@@ -113,6 +71,13 @@ const MainPage = () => {
           </Styled.ResultContents>
         )}
       </div>
+      {/* 임시로 되살림 */}
+      <p>최근 검색어</p>
+      <ul>
+        {recentSearch.map((recent, index) => (
+          <li key={index}>{recent}</li>
+        ))}
+      </ul>
     </Styled.Wrapper>
   );
 };
